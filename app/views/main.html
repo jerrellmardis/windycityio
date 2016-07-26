@@ -1,0 +1,176 @@
+<section id="hero" class="event-layout">
+  <div class="container">
+    <div class="vertical-center-wrapper">
+      <div class="vertical-center-table">
+        <div class="vertical-center-content">
+          <div class="row">
+            <div class="col-md-10">
+              <h1>WindyCity DevCon</h1>
+              <div class="event-hero-info text-shadow-medium">
+                <small><span class="event-hero-icon fa fa-calendar hidden-xs"></span>{{ site.eventDate | date:'fullDate' }}</small><br />
+                <small><span class="event-hero-icon fa fa-university hidden-xs"></span>{{ site.eventLocation }}</small>
+              </div>
+              <div>
+                <a href ng-click="goto(site.speakerURL, 'button', 'click', 'Become A Speaker')" class="cta cta-default all-caps">Become A Speaker</a>
+                <a href ng-click="goto(site.ticketURL, 'button', 'click', 'Buy Ticket')" class="cta cta-default all-caps">Buy Ticket</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="introduction" class="centered" style="padding-bottom: 15px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 centered">
+        <p class="section-title">About WindyCity DevCon</p>
+        <h2 class="section-heading">Mobile, Android, web, cloud, machine learning, and more! </h2>
+        <h5>WindyCity DevCon 2016 is a 100% community organized developer conference with industry experts.</h5> 
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-md-10 col-md-offset-1">
+        <h5>Featuring talks by guest speakers from local community technology leaders to Google product team developers, codelabs, workshops, and demos on Google tech, create your very own Google Cloudspin animation
+        </h5>
+      </div>
+      <a href ng-click="goto(site.ticketURL, 'button', 'click', 'Get Ticket')" class="cta cta-default all-caps">Get Your Ticket</a>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</section>
+<section id="location" style="padding-bottom: 15px;">
+  <div map-lazy-load="{{ gMapLazy }}" map-lazy-load-params="{{ gMapsUrl }}">
+    <map center="{{ map.center.lat }}, {{ map.center.lng }}" style="height: 400px;" zoom="{{ map.zoom }}" scrollwheel="false" map-type-control="false">
+      <marker id="eventSpace" position="{{ map.lat }}, {{ map.lng }}"></marker>
+      <info-window id="eventDetail" visible-on-marker="eventSpace">
+        <div>
+          <div id="siteNotice"></div>
+          <h4 id="infoHeading"><strong>{{ site.eventName }} Location</strong></h4>
+          <div id="infoBody">
+            <p>
+              {{ site.eventLocation }}<br />
+              {{ site.eventAddress }}<br />
+              {{ site.eventDate | date:'longDate' }}<br />
+              {{ eventStart | date:'shortTime' }} - {{ eventEnd | date:'shortTime' }}
+            </p>
+          </div>
+        </div>
+      </info-window>
+    </map>
+  </div>
+</section>
+<section id="mobileApp" class="centered" style="padding-bottom: 15px;" ng-if="site.androidPkg || site.iosPkg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 centered">
+        <p class="section-title">Download Our DevFest App</p>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-md-12 col-md-offset-1" style="padding: 30px 0;">
+        <div class="col-md-6" style="position: relative; top: 50%; transform: translateY(50%);">
+          <a ng-if="site.androidPkg" ng-href="{{ androidAppUrl }}" target="_blank">
+            <img alt="Get it on Google Play"
+                 title="Get it on Google Play"
+                 class="col-md-8 col-xs-6"
+                 style="padding: 10px"
+                 src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" />
+          </a>
+            <img alt="Coming Soon"
+                 title="Coming Soon"
+                 class="col-md-8 col-xs-6"
+                 style="padding: 10px"
+                 src="images/coming-soon-overlay.png" />
+          <a ng-if="site.iosPkg" ng-href="{{ iosAppUrl }}" target="_blank">
+            <img alt="Download on the App Store"
+                 class="col-md-8 col-xs-6"
+                 style="padding: 10px"
+                 src="https://devimages.apple.com.edgekey.net/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg" />
+          </a>
+        </div>
+        <div class="col-md-6 hidden-sm hidden-xs" style="position: relative; top: 0; left: 0;">
+<!--          <img ng-if="site.iosPkg" src="images/devfest_ios_side2.png" style="width: 60%; position: absolute; top: -30px; left: 170px;" />-->
+          <img ng-if="site.androidPkg" src="images/devfest_android.png" style="width: 60%; position: relative; top: 0; left: 0;" />
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</section>
+<section id="sponsors" class="gray-bg" ng-controller="SponsorshipCtrl">
+  <div class="container centered">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 centered">
+        <p class="section-title">Our Sponsors</p>
+        <h2 class="section-heading">
+         
+          <!-- Add sessions (Auth required) -->
+          <a ng-show-auth="" class="btn btn-sm btn-success" ng-click="openFormModal()">Add Sponsor</a>
+        </h2>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-md-10 col-md-offset-1">
+        <h4>General Sponsor</h4>
+        <ul class="list-inline">
+          <li><a href="https://www.google.com.ua/intl/en/about/" target="_blank"><img src="../images/google.png" title="Google" alt="Google" /></a></li>
+         
+        </ul>
+        <span ng-repeat="(key, value) in sponsors | levelSorter:'level' | groupBy:'level'">
+          <h4>{{ key }} Sponsor</h4>
+          <ul class="list-inline">
+            <li ng-repeat="sponsor in value">
+              <a href ng-click="goto(sponsor.link, 'sponsor', 'click', '{{ sponsor.company }}')"><img ng-src="{{ sponsor.image }}" title="{{ sponsor.description }}" alt="{{ sponsor.company }}" /></a>
+              <a ng-show-auth="" class="btn btn-sm btn-primary" ng-click="openFormModal(sponsor)">Edit</a>
+              <a ng-show-auth="" class="btn btn-sm btn-danger" ng-click="deleteSponsor(sponsor)">Delete</a>
+            </li>
+          </ul>
+        </span>
+        <div>
+          <a ng-href="/sponsorship" class="cta cta-default all-caps">Learn More</a>
+          <a href ng-click="goto(site.sponsorURL, 'button', 'click', 'Become A Sponsor 1')" class="cta cta-default all-caps">Become A Sponsor</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add/Edit Sponsor -->
+  <script type="text/ng-template" id="modalSponsorForm.html">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3 class="modal-title">{{ sponsor.company ? 'Edit' : 'Add' }} Sponsor</h3>
+    </div>
+    <div class="modal-body">
+      <form role="form">
+        <div class="form-group">
+          <label for="company">Company:</label>
+          <input type="text" id="company" class="form-control" ng-model="sponsor.company" placeholder="Company" required />
+        </div>
+        <div class="form-group">
+          <label for="link">Link:</label>
+          <input type="text" id="link" class="form-control" ng-model="sponsor.link" placeholder="http://example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <input type="text" id="description" class="form-control" ng-model="sponsor.description" placeholder="Text for mouse hover" required />
+        </div>
+        <div class="form-group">
+          <label for="image">Image:</label>
+          <input type="file" id="image" class="form-control" ng-model="sponsor.image" accept="image/x-png" required />
+        </div>
+        <div class="form-group">
+          <label for="level">Sponsorship Level:</label>
+          <select class="form-control" id="level" ng-model="sponsor.level" required>
+            <option value="Gold">Gold</option>
+            <option value="Silver">Silver</option>
+            <option value="Bronze">Bronze</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <p ng-show="err" class="bg-danger">{{ err }}</p>
+      <button class="btn btn-success" type="submit" ng-click="saveSponsor(sponsor)">Save</button>
+      <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+  </script>
+</section>

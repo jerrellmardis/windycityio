@@ -1,0 +1,48 @@
+<footer id="footer" class="footer" ng-controller="FooterCtrl">
+  <div class="container">
+    <div class="row" style="padding-bottom: 60px;">
+      <div class="pull-left col-md-6 col-xs-6">
+        <div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300"></div>
+      </div>
+	</div>
+    <div class="row">
+      <div class="col-md-4 col-xs-6">
+        <h5>Links</h5>
+        <ul>
+          <li><a ng-href="{{ site.website }}" target="_blank">{{ site.name }}</a></li>
+          <li><a href="https://developers.google.com/" target="_blank">Google Developers</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 col-xs-6">
+        <h5>Contact</h5>
+        <ul>
+          <li ng-if="site.eventEmail.length > 0"><a ng-href="{{ 'mailto:' + site.eventEmail }}" target="_blank">{{ site.eventEmail }}</a></li>
+          <li ng-if="site.twitter.length > 0"><a ng-href="{{ 'http://twitter.com/home?status=@' + site.twitter }}" target="_blank">@{{ site.twitter }}</a></li>
+        </ul>
+      </div> 
+      <div class="col-md-4 col-xs-6">
+        <h5>FAQ</h5> 
+        <ul>
+          <li><a href="https://developers.google.com/groups/" target="_blank">Google Developer Groups</a></li>
+          <li><a href="https://developers.google.com/events/devfest/" target="_blank">GDG DevFest Season</a></li>
+          <li><a href="https://developers.google.com/groups/guidelines/" target="_blank">GDG Code of Conduct</a></li> 
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-xs-12">
+        <ul class="social-links">
+          <li ng-if="site.id.length > 0" class="fa fa-google-plus-square" ng-click="socialLink('google_plus')" style="cursor: pointer;"></li>
+          <li ng-if="site.twitter.length > 0" class="fa fa-twitter-square" ng-click="socialLink('twitter')" style="cursor: pointer;"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <!-- *** Please don't delete this line *** -->
+      <div class="col-md-6 col-xs-12 attribution">
+        &copy; {{ copyright }} {{ site.name }} &bull; <a href="https://goo.gl/Vhrc6i" target="_blank">Project DeLorean</a><br />
+        Originally by <a href="https://plus.google.com/+KylePaul" target="_blank">Kyle Paul</a> &bull; <a href="http://gdgkc.org" target="_blank">GDG Kansas City</a>
+      </div>
+    </div>
+  </div>
+</footer>

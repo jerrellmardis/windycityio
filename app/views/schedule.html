@@ -1,0 +1,174 @@
+<section id="schedule" class="gray-bg">
+  <div class="container schedule">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 centered">
+        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 centered">
+          <p class="section-title">Session Schedule</p>
+          <h2 class="section-heading">
+            <!-- Add sessions (Auth required) -->
+            <a ng-show-auth="" class="btn btn-sm btn-success" ng-click="openFormModal()">Add Session</a>
+          </h2>
+          <h5><span class="hidden-xs hidden-sm">Click</span><span class="hidden-md hidden-lg">Tap</span> on a Session for more info</h5>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-lg-12" ng-repeat="time in sessionTimes | orderBy:'toString()'" style="padding-bottom: 25px; color: #686868;">
+        <div class="col-lg-2 col-md-2 hidden-sm hidden-xs" style="min-height: 160px; text-align: right;">
+          <span style="font-size: 32px;">{{ getTime(time) | date:'hh:mm' }}</span><br />
+          <span style="font-size: 28px;">{{ getEndTime(time) | date:'hh:mm' }}</span>
+        </div>
+        <div class="col-sm-2 col-xs-2 hidden-lg hidden-md" style="min-height: 160px; text-align: right; font-weight: bold;">
+          <span style="font-size: 16px;">{{ getTime(time) | date:'hh:mm' }}</span><br />
+          <span style="font-size: 14px;">{{ getEndTime(time) | date:'hh:mm' }}</span>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="min-height: 160px; border-right: 3px solid #C8C8C8; border-bottom: 2px solid #C8C8C8; padding: 0;">
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
+               ng-repeat="session in sessions | filter:{time: time}:true | orderBy:'track'"
+               ng-click="openInfoModal(session)"
+               style="min-height: 160px; padding: 10px; border-bottom: 1px solid #C8C8C8; background-color: white; cursor: pointer;">
+            <p ng-class="{
+                         'bg-success': (session.track == 1), 
+                         'bg-info': (session.track == 2), 
+                         'bg-danger': (session.track == 3)}"
+               ng-if="session.speaker"
+               class="hidden-xs hidden-sm"
+               style="height: 20px; padding: 0;"></p>
+            <div class="hidden-xs hidden-sm">
+              <span ng-bind-html="session.title" style="font-size: 18px;"></span><br /><br />
+              <div ng-show="session.speaker" style="font-size: 14px;">
+                <span class="fa fa-user"></span>&nbsp;
+                <a href="/speakers" ng-bind="session.speaker"></a>
+              </div>
+            </div>
+            <div class="hidden-md hidden-lg col-xs-10 col-sm-10">
+              <span ng-bind-html="session.title" style="font-size: 18px;"></span><br /><br />
+              <div ng-if="session.speaker" style="font-size: 14px;">
+                <span class="fa fa-user"></span>&nbsp;
+                <a href="/speakers" ng-bind="session.speaker"></a>
+              </div>
+            </div>
+            <div class="hidden-md hidden-lg col-xs-1 col-sm-1"
+                 style="min-height: 130px;"
+                 ng-if="session.speaker"
+                 ng-class="{
+                         'bg-success': (session.track == 1), 
+                         'bg-info': (session.track == 2), 
+                         'bg-danger': (session.track == 3)}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add/Edit Session -->
+  <script type="text/ng-template" id="modalSessionForm.html">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3 class="modal-title">{{ session.title ? 'Edit' : 'Add' }} Session</h3>
+    </div>
+    <div class="modal-body">
+      <form role="form">
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" id="title" class="form-control" ng-model="session.title" placeholder="Session Title" required />
+        </div>
+        <div class="form-group">
+          <label for="room">Room:</label>
+          <select class="form-control" id="room" ng-model="session.room" required>
+            <option value="Leonardo">Leonardo</option>
+            <option value="Raphael">Raphael</option>
+            <option value="Michelangelo">Michelangelo</option>
+            <option value="Donatello">Donatello</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="time">Time:</label>
+          <input type="text" id="time" class="form-control" ng-model="session.time" placeholder="HH:mm:ss" required />
+        </div>
+        <div class="form-group">
+          <label for="track">Track #:</label>
+          <select class="form-control" id="track" ng-model="session.track" required>
+            <option value="1">Track 1</option>
+            <option value="2">Track 2</option>
+            <option value="3">Track 3</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="experience">Experience Level:</label>
+          <select class="form-control" id="expereince" ng-model="session.experience" required>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Expert">Expert</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="speaker">Speaker:</label>
+          <select id="speaker"
+                  name="speaker"
+                  class="form-control"
+                  ng-model="session.speaker"
+                  ng-options="item.name as item.name for item in speakers | orderBy:'name'"
+                  required>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea id="description"
+                    name="description"
+                    class="form-control"
+                    rows="8"
+                    ng-model="session.description"
+                    placeholder="Enter a description"
+                    required>
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="surveyLink">Survey Link</label>
+          <input type="url" class="form-control" id="surveyLink" name="surveyLink" ng-model="session.surveyLink" placeholder="https://docs.google.com/forms/d/..." />
+        </div>
+        <div class="form-group">
+          <label for="videoLink">Video Link</label>
+          <input type="url" class="form-control" id="videoLink" name="videoLink" ng-model="session.videoLink" placeholder="https://youtube.com/..." />
+        </div>
+        <div class="form-group">
+          <label for="slidesLink">Slides Link</label>
+          <input type="url" class="form-control" id="slidesLink" name="slidesLink" ng-model="session.slidesLink" placeholder="https://docs.google.com/..." />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <p ng-show="err" class="bg-danger">{{ err }}</p>
+      <button class="btn btn-success" type="submit" ng-click="saveSession(session)">Save</button>
+      <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+  </script>
+  
+  <!-- Session Info -->
+  <script type="text/ng-template" id="modalSessionContent.html">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3 class="modal-title" ng-bind="session.title"></h3>
+    </div>
+    <div class="modal-body">
+      <div class="session-description">
+        <h5 class="session-title col-lg-10 col-md-10 col-sm-10 col-xs-10"></h5>
+        <div class="session-speaker col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <span ng-if="session.speaker"><strong>Speaker:</strong>&nbsp;<span ng-bind="session.speaker"></span></span><br />
+          <span ng-if="session.room"><strong>Room:</strong>&nbsp;<span ng-bind="session.room"></span></span><br />
+          <span ng-if="session.speaker"><strong>Experience Level:</strong>&nbsp;<span ng-bind="session.experience"></span></span>
+        </div>
+        <div ng-if="session.description" class="session-summary" ng-bind-html="session.description | newline"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button ng-show="session.surveyLink && showSurvey" class="btn btn-sm btn-info" style="float: left;" ng-click="openSurvey(session)">Survey</button>
+      <button ng-show="session.videoLink" class="btn btn-sm btn-success" style="float: left;" ng-click="openVideo(session)">Video</button>
+      <button ng-show="session.slidesLink" class="btn btn-sm btn-info" style="float: left;" ng-click="openSlides(session)">Slides</button>
+      <img src="images/twitter.png" ng-if="session.speaker" height="32px" style="cursor: pointer;" alt="Share on Twitter" title="Share on Twitter" ng-click="shareTwitter(session)" />
+      <!-- Edit/Delete a session (Auth required) -->
+      <button ng-show-auth="" class="btn btn-sm btn-primary" ng-click="editSession(session)">Edit</button>
+      <button ng-show-auth="" class="btn btn-sm btn-danger" ng-click="deleteSession(session)">Delete</button>
+      <button ng-show-auth="" class="btn btn-default" type="button" ng-click="cancel()">Close</button>
+    </div>
+  </script>
+</section>

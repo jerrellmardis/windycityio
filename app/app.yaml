@@ -1,0 +1,59 @@
+application: devfest-2015
+version: 8
+runtime: php55
+threadsafe: true
+api_version: 1
+
+handlers:
+- url: /.well-known/acme-challenge/(.*)
+  script: cert.php
+
+- url: /fonts
+  static_dir: app/fonts
+
+- url: /images
+  static_dir: app/images
+
+- url: /img
+  static_dir: app/img
+
+- url: /scripts
+  static_dir: app/scripts
+
+- url: /styles
+  static_dir: app/styles
+
+- url: /views
+  static_dir: app/views
+
+- url: /favicon\.ico
+  static_files: app/favicon.ico
+  upload: app/favicon.ico
+
+- url: /apple-touch-icon\.png
+  static_files: app/apple-touch-icon.png
+  upload: app/apple-touch-icon.png
+
+- url: /robots\.txt
+  static_files: app/robots.txt
+  upload: app/robots.txt
+
+- url: /manifest\.json
+  static_files: app/manifest.json
+  upload: app/manifest.json
+
+- url: /service-worker\.js
+  static_files: app/service-worker.js
+  upload: app/service-worker.js
+
+# index files
+- url: /(.+)
+  static_files: app/index.html
+  upload: app/index.html
+  secure: always
+
+# site root
+- url: /
+  static_files: app/index.html
+  upload: app/index.html
+  secure: always

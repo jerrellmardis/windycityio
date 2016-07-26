@@ -1,0 +1,150 @@
+<section id="speakers" class="gray-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 centered">
+        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 centered">
+          <p class="section-title">Meet the Speakers</p>
+          <a href ng-click="goto(site.speakerURL, 'button', 'click', 'Become A Speaker')" class="cta cta-default all-caps">Become A Speaker</a>
+          <h2 class="section-heading">
+            <!-- Add sessions (Auth required) -->
+            <a ng-show-auth="" class="btn btn-sm btn-success" ng-click="openFormModal()">Add Speaker</a>
+          </h2>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <ul ng-cloak ng-if="speakers.length > 0" id="speaker_grid">
+        <li class="col-md-4 col-sm-offset-0 col-xs-8 col-xs-offset-2 speaker-item" ng-repeat="speaker in speakers">
+          <div class="speaker-item-content" style="cursor: pointer;" ng-click="openInfoModal(speaker)">
+            <img ng-src="{{ speaker.image || 'images/profile.png' }}" alt="{{ speaker.name }}" title="{{ speaker.name }}"/>
+            <div class="speaker-info centered">
+              <h6>{{ speaker.name }}<br /><small>{{ speaker.company }} / {{ speaker.title }}</small></h6>
+              <small>Click for<br />more info</small>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div ng-cloak ng-if="speakers.length === 0" class="centered">
+        Stay tuned! Speakers are being added soon!
+        <div class="gdg_loading" ng-show="loading"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add/Edit Speaker -->
+  <script type="text/ng-template" id="modalSpeakerForm.html">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3 class="modal-title">{{ speaker.name ? 'Edit' : 'Add' }} Speaker</h3>
+    </div>
+    <div class="modal-body">
+      <form id="speakerForm" role="form">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" class="form-control" ng-model="speaker.name" placeholder="Full Name" required />
+        </div>
+        <div class="form-group">
+          <label for="company">Company:</label>
+          <input type="text" id="company" class="form-control" ng-model="speaker.company" placeholder="Google" required />
+        </div>
+        <div class="form-group">
+          <label for="title">Position/Title:</label>
+          <input type="text" id="title" class="form-control" ng-model="speaker.title" placeholder="Wizard" required />
+        </div>
+        <div class="form-group">
+          <label for="bio">Bio:</label>
+          <textarea name="bio" id="bio" class="form-control" ng-model="speaker.bio" placeholder="What do they do? Keep it short &amp; simple" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="image">Image:</label>
+          <input type="file" id="image" class="form-control" ng-model="sponsor.image" accept="image/x-png" />
+        </div>
+        <div class="form-group">
+          <label for="google">Google+: (only add the handle)</label>
+          <input type="text" id="google" class="form-control" ng-model="speaker.google" placeholder="+Awesome" />
+        </div>
+        <div class="form-group">
+          <label for="facebook">Facebook: (only add the handle)</label>
+          <input type="text" id="facebook" class="form-control" ng-model="speaker.facebook" placeholder="Awesome" />
+        </div>
+        <div class="form-group">
+          <label for="twitter">Twitter: (only add the handle)</label>
+          <input type="text" id="twitter" class="form-control" ng-model="speaker.twitter" placeholder="Awesome" />
+        </div>
+        <div class="form-group">
+          <label for="github">GitHub: (only add the handle)</label>
+          <input type="text" id="github" class="form-control" ng-model="speaker.github" placeholder="Awesome" />
+        </div>
+        <div class="form-group">
+          <label for="linkedin">LinkedIn: (only add the handle)</label>
+          <input type="text" id="linkedin" class="form-control" ng-model="speaker.linkedin" placeholder="Awesome" />
+        </div>
+        <div class="form-group">
+          <label for="website">Website:</label>
+          <input type="text" id="website" class="form-control" ng-model="speaker.website" placeholder="http://awesome.com/" />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <p ng-show="err" class="bg-danger">{{ err }}</p>
+      <button class="btn btn-success" type="submit" ng-click="saveSpeaker(speaker)">Save</button>
+      <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+  </script>
+  
+  <!-- Speaker Info -->
+  <script type="text/ng-template" id="modalInfoContent.html">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h3 class="modal-title">{{ speaker.name }}</h3>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div class="pull-left col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <img class="speaker-image" ng-src="{{ speaker.image || 'images/profile.png' }}" alt="{{ speaker.name }}" title="{{ speaker.name }}">
+        </div>
+        <div class=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <h3><small>{{ speaker.company }}<br />{{ speaker.title }}</small></h3>
+          <p>{{ speaker.bio }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <ul class="speaker-social">
+        <li ng-show="speaker.google" class="google-plus-link">
+          <a href="" ng-click="socialLink('google_plus', speaker.google)" data-placement="top" title="Google+">
+            <i class="fa fa-google-plus-square fa-2x"></i>
+          </a>
+        </li>
+        <li ng-show="speaker.facebook" class="facebook-link">
+          <a href="" ng-click="socialLink('facebook', speaker.facebook)" data-placement="top" title="Facebook">
+            <i class="fa fa-facebook-square fa-2x"></i>
+          </a>
+        </li>
+        <li ng-show="speaker.twitter" class="twitter-link">
+          <a href="" ng-click="socialLink('twitter', speaker.twitter)" data-placement="top" title="Twitter">
+            <i class="fa fa-twitter-square fa-2x"></i>
+          </a>
+        </li>
+        <li ng-show="speaker.github" class="github-link">
+          <a  href="" ng-click="socialLink('github', speaker.github)" data-placement="top" title="GitHub">
+            <i class="fa fa-github-square fa-2x"></i>
+          </a>
+        </li>
+        <li ng-show="speaker.linkedin" class="linkedin-link">
+          <a  href="" ng-click="socialLink('linkedin', speaker.linkedin)" data-placement="top" title="LinkedIn">
+            <i class="fa fa-linkedin-square fa-2x"></i>
+          </a>
+        </li>
+        <li ng-show="speaker.website" class="website-link">
+          <a ng-href="{{ speaker.website }}" data-placement="top" title="Website">
+            <i class="fa fa-chrome fa-2x"></i>
+          </a>
+        </li>
+      </ul>
+      <!-- Edit/Delete a speaker (Auth required) -->
+      <button ng-show-auth="" class="btn btn-sm btn-primary" ng-click="editSpeaker(speaker)">Edit</button>
+      <button ng-show-auth="" class="btn btn-sm btn-danger" ng-click="deleteSpeaker(speaker)">Delete</button>
+      <button class="btn btn-default" type="button" ng-click="cancel()">Close</button>
+    </div>
+  </script>
+</section>

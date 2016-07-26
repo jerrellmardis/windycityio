@@ -1,0 +1,77 @@
+<section id="schedule" class="gray-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 centered">
+        <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 centered">
+          <p class="section-title">Push Notification</p>
+          <h2 class="section-heading"></h2>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-lg-12 col-md-12" style="background-color: #fff; padding: 45px;">
+        <form role="form">
+          <div class="form-group">
+            <label for="pushTitle">Title:</label>
+            <input type="text" id="pushTitle" class="form-control" ng-model="pushTitle" placeholder="Message Title" required />
+          </div>
+          <div class="form-group">
+            <label for="pushMessage">Message:</label>
+            <textarea id="pushMessage"
+                      name="pushMessage"
+                      class="form-control"
+                      rows="3"
+                      ng-model="pushMessage"
+                      placeholder="Enter a message"
+                      required>
+            </textarea>
+          </div>
+          <label>Recipients:</label>
+          <div class="form-group" style="padding-left: 25px; clear: both; border: 1px solid silver; height: 150px; overflow: auto;">
+            <label class="checkbox">
+              <input type="checkbox" ng-model="selectAll" ng-click="checkAll()">
+              Select All
+            </label>
+            <span ng-repeat="item in accounts | orderBy:['name', 'uid']">
+              <label class="checkbox" for="{{ item.uid }}">
+                <input type="checkbox" ng-model="item.selected" name="group" id="{{ item.token }}" />
+                {{ item.name }} ({{ item.uid }})
+              </label>
+            </span>
+          </div>
+        </form>
+        <div ng-show-auth="">
+          <button class="btn btn-sm btn-success" ng-click="sendPush()" ng-disabled="(selectedItems === 0)">
+            Send to {{ selectedItems }} device{{ selectedItems > 1 || selectedItems === 0 ? 's' : '' }}
+          </button>
+        </div>
+        <br><br>
+        <div ng-if="messageId" class="form-group">
+          <label for="messageId">Message ID:</label>
+          <input type="text" id="messageId" class="form-control" ng-model="messageId" disabled required />
+        </div>
+        <a ng-show-auth="" ng-if="messageId" class="btn btn-sm btn-success" ng-click="checkStatus()">Check Status</a>
+        <div ng-if="messageDetails">
+          <br>
+          App ID: {{ messageDetails.app_id }}<br>
+          Status: {{ messageDetails.status }}<br><br>
+          <strong>Android</strong>
+          <ul>
+            <li>&bull; Sent: {{ messageDetails.android.sent }}</li>
+            <li>&bull; Success: {{ messageDetails.android.success }}</li>
+            <li>&bull; Failure Reason: {{ messageDetails.android.failure_reason }}</li>
+          </ul>
+          <strong>iOS</strong>
+          <ul>
+            <li>&bull; Sent: {{ messageDetails.ios.sent }}</li>
+            <li>&bull; Success: {{ messageDetails.ios.success }}</li>
+            <li>&bull; Failure Reason: {{ messageDetails.ios.failure_reason }}</li>
+          </ul>
+          <strong>Errors</strong>
+          <ul>
+            <li ng-repeat="item in messageDetails.errors">&bull; {{ item }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
