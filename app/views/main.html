@@ -26,13 +26,11 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-2 centered">
         <p class="section-title">About WindyCity DevCon</p>
-        <h2 class="section-heading">Mobile, Android, web, cloud, machine learning, and more! </h2>
-        <h5>WindyCity DevCon 2016 is a 100% community organized developer conference with industry experts.</h5> 
+        <h2 class="section-heading">Android, Web &amp; Cloud, Machine Learning, and more!</h2>
       </div>
       <div class="clearfix"></div>
       <div class="col-md-10 col-md-offset-1">
-        <h5>Featuring talks by guest speakers from local community technology leaders to Google product team developers, codelabs, workshops, and demos on Google tech, create your very own Google Cloudspin animation
-        </h5>
+        <p><b>WindyCity DevCon</b> 2016 is a community organized developer conference. Our 1 day conference will feature 3 tracks and 15+ speakers from the technology leaders within the community as well as Google product team developers.</p>
       </div>
       <a href ng-click="goto(site.ticketURL, 'button', 'click', 'Get Ticket')" class="cta cta-default all-caps">Get Your Ticket</a>
       <div class="clearfix"></div>
@@ -103,7 +101,7 @@
       <div class="col-md-8 col-md-offset-2 centered">
         <p class="section-title">Our Sponsors</p>
         <h2 class="section-heading">
-         
+
           <!-- Add sessions (Auth required) -->
           <a ng-show-auth="" class="btn btn-sm btn-success" ng-click="openFormModal()">Add Sponsor</a>
         </h2>
@@ -113,7 +111,7 @@
         <h4>General Sponsor</h4>
         <ul class="list-inline">
           <li><a href="https://www.google.com.ua/intl/en/about/" target="_blank"><img src="../images/google.png" title="Google" alt="Google" /></a></li>
-         
+
         </ul>
         <span ng-repeat="(key, value) in sponsors | levelSorter:'level' | groupBy:'level'">
           <h4>{{ key }} Sponsor</h4>
@@ -132,7 +130,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Add/Edit Sponsor -->
   <script type="text/ng-template" id="modalSponsorForm.html">
     <div class="modal-header">
